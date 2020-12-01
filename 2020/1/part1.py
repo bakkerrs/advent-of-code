@@ -1,5 +1,5 @@
 # Get input file
-with open("./day-1/input.txt") as f:
+with open("./2020/1/input.txt") as f:
     input = f.readlines()
 input = [x.strip() for x in input]
 input = [ int(x) for x in input ]
