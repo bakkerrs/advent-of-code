@@ -1,5 +1,5 @@
 def get_input():
-    with open("./2020/1/input.txt") as f:
+    with open("./2022/day 02/input.txt") as f:
         return [x.strip() for x in f.read().split("\n")]
 
 # Part 1: What would your total score be if everything goes exactly according to your strategy guide?
@@ -51,7 +51,7 @@ def part1(input):
 
     return score
         
-# Part 2: Find the top three Elves carrying the most Calories. How many Calories are those Elves carrying in total?
+# Part 2: Following the Elf's instructions for the second column, what would your total score be if everything goes exactly according to your strategy guide?
 def part2(input):
     WIN = 6
     DRAW = 3

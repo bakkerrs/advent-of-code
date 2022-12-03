@@ -1,5 +1,5 @@
 def get_input():
-    with open("./2020/1/input.txt") as f:
+    with open("./2022/day 01/input.txt") as f:
         return [x.strip() for x in f.read().split("\n")]
 
 # Part 1: Find the Elf carrying the most Calories. How many total Calories is that Elf carrying?
