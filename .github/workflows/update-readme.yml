@@ -1,0 +1,29 @@
+name: Update README ⭐
+on:
+  push:
+    branches-ignore:
+      - "template"
+      - "legacy"
+      - "2022"
+  schedule:
+  - cron: "51 */4 1-25 DEC *"  # Every 4 hours
+  workflow_dispatch:
+
+jobs:
+  update-readme:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Extract branch name
+        shell: bash
+        run: echo "##[set-output name=branch;]$(echo ${GITHUB_REF#refs/heads/})"
+        id: extract_branch
+      - uses: k2bd/advent-readme-stars@v1
+        with:
+          userId: 1030132
+          leaderboardId: 9876543
+          sessionCookie: ${{ secrets.AOC_SESSION }}
+          year: ${{ steps.extract_branch.outputs.branch }}
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update README stars
