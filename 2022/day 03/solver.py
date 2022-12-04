@@ -7,8 +7,8 @@ def part1(input):
     items = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     sum_priorities = 0
     for rucksack in input:
-        first_compartment = rucksack[0:int(len(rucksack)/2)]
-        second_compartment = rucksack[int(len(rucksack)/2):int(len(rucksack))]
+        first_compartment = rucksack[:int(len(rucksack)/2)]
+        second_compartment = rucksack[int(len(rucksack)/2):]
         
         for item in first_compartment:
             if item in second_compartment:
