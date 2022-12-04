@@ -28,9 +28,7 @@ def _download_problem_input(day: int, year: int, cookie: str = None) -> str:
     if not cookie:
         return "No session cookie found. You'll need to copy the input manually."
     input_url = f"https://adventofcode.com/{year}/day/{day}/input"
-    headers = {
-        "User-Agent": "https://github.com/phildavis17/aoc_helper"
-    }
+    headers = {"User-Agent": "https://github.com/phildavis17/aoc_helper"}
     s = requests.Session()
     s.cookies.set("session", cookie)
     input_text = s.get(input_url, headers=headers).text
@@ -45,19 +43,22 @@ def _write_input_to_file(file_path: Path, input_text: str) -> None:
 def _get_hash_key(cookie: str, day_str: str):
     """
     Returns a hashed string of the session cookie and the day string.
-    
+
     This hash is used as the filename of a cached input file
     to avoid collisions if the cookie has changed.
     """
     return md5(bytes(cookie + day_str, "utf-8")).hexdigest()
 
+
 def _write_canary(cookie: str) -> None:
     with open(CACHE_CANARY_FILE, "w") as canary:
         canary.write(cookie)
 
+
 def _clear_cache() -> None:
     for cache_file in CACHE_FOLDER.iterdir():
         Path.unlink(cache_file)
+
 
 def _canary_is_current(cookie: str) -> bool:
     with open(CACHE_CANARY_FILE, "r") as canary_file:
@@ -165,5 +166,3 @@ def main(day: int):
 
 if __name__ == "__main__":
     raise SystemExit(cli())
-    
-

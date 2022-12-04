@@ -1,5 +1,5 @@
 # Advent of Code 2022
-# Day 02
+# Day 04
 # Robin Bakker
 
 import argparse
@@ -37,65 +37,40 @@ def parse_input(data_path: Path) -> list:
 
 def part_1(input_data: list):
     """Solution code for Part 1. Should return the solution."""
-    WIN = 6
-    DRAW = 3
-    LOSE = 0
+    sum = 0
+    for pairing in input_data:
+        elf1, elf2 = pairing.split(",")
+        x0, y0 = map(int, elf1.split("-"))
+        x1, y1 = map(int, elf2.split("-"))
 
-    shapes = {
-        "A": "rock",
-        "B": "paper",
-        "C": "scissors",
-        "X": "rock",
-        "Y": "paper",
-        "Z": "scissors",
-    }
+        eq = False
+        if x0 >= x1 and y0 <= y1:
+            eq = True
+            sum += 1
+        elif x1 >= x0 and y1 <= y0:
+            eq = True
+            sum += 1
 
-    shapeScore = {"rock": 1, "paper": 2, "scissors": 3}
-
-    result = {
-        "rock": {"rock": DRAW, "paper": LOSE, "scissors": WIN},
-        "paper": {"rock": WIN, "paper": DRAW, "scissors": LOSE},
-        "scissors": {"rock": LOSE, "paper": WIN, "scissors": DRAW},
-    }
-
-    score = 0
-
-    for round in input_data:
-        opponent, you = round.split(" ")
-        opponent = shapes[opponent]
-        you = shapes[you]
-        score += shapeScore[you] + result[you][opponent]
-
-    return score
+    return sum
 
 
 def part_2(input_data: list):
     """Solution code for Part 2. Should return the solution."""
-    WIN = 6
-    DRAW = 3
-    LOSE = 0
-    ROCK = 1
-    PAPER = 2
-    SCISSORS = 3
+    sum = 0
+    for pairing in input_data:
+        elf1, elf2 = pairing.split(",")
+        x0, y0 = map(int, elf1.split("-"))
+        x1, y1 = map(int, elf2.split("-"))
 
-    shapes = {"A": ROCK, "B": PAPER, "C": SCISSORS}
+        if (
+            (x0 <= y1 and x0 >= x1)
+            or (y0 <= y1 and y0 >= x1)
+            or (x1 <= y0 and x1 >= x0)
+            or (y1 <= y0 and y1 >= x0)
+        ):
+            sum += 1
 
-    outcomes = {"X": LOSE, "Y": DRAW, "Z": WIN}
-
-    playedShape = {
-        ROCK: {WIN: PAPER, DRAW: ROCK, LOSE: SCISSORS},
-        PAPER: {WIN: SCISSORS, DRAW: PAPER, LOSE: ROCK},
-        SCISSORS: {WIN: ROCK, DRAW: SCISSORS, LOSE: PAPER},
-    }
-
-    score = 0
-    for round in input_data:
-        opponent, outcome = round.split(" ")
-        opponent = shapes[opponent]
-        outcome = outcomes[outcome]
-        score += playedShape[opponent][outcome] + outcome
-
-    return score
+    return sum
 
 
 def run_direct():

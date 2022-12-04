@@ -32,7 +32,10 @@ def parse_input(data_path: Path) -> list:
     Should return the input data in a format where it is ready to be worked on.
     """
     with open(data_path, "r") as raw_input:
-        return [[int(elf.strip()) for elf in elves.split("\n")] for elves in raw_input.read().split("\n\n")] 
+        return [
+            [int(elf.strip()) for elf in elves.split("\n")]
+            for elves in raw_input.read().split("\n\n")
+        ]
 
 
 def part_1(input_data: list):

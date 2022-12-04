@@ -40,16 +40,16 @@ def part_1(input_data: list):
     items = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
     sum_priorities = 0
     for rucksack in input_data:
-        first_compartment = rucksack[:int(len(rucksack)/2)]
-        second_compartment = rucksack[int(len(rucksack)/2):]
-        
+        first_compartment = rucksack[: int(len(rucksack) / 2)]
+        second_compartment = rucksack[int(len(rucksack) / 2) :]
+
         for item in first_compartment:
             if item in second_compartment:
                 common_item = item
                 break
 
         sum_priorities += items.index(common_item) + 1
-    
+
     return sum_priorities
 
 
@@ -66,10 +66,10 @@ def part_2(input_data: list):
                 if item in group[1] and item in group[2]:
                     badge = item
                     break
-            
+
             sum_priorities += items.index(badge) + 1
             group = []
-    
+
     return sum_priorities
 
 
