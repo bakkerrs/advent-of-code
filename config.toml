@@ -5,5 +5,9 @@ author = "Robin Bakker"
 
 [benchmark]
 registered_problems = [
-    
+    1,
+    2,
+    3,
+    4,
+    5
 ]
