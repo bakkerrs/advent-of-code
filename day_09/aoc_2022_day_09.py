@@ -37,42 +37,45 @@ def parse_input(data_path: Path) -> list:
 
 
 def chase(me, them):
-    diff = np.subtract(them, me)
-    if np.max(diff) > 1 or np.min(diff) < -1:
-        x = 0
-        y = 0
-        if np.absolute(diff[0]) > 1:
-            x = np.sign(diff[0])
-            if np.absolute(diff[1]) == 1:
-                y = np.sign(diff[1])
-        if np.absolute(diff[1]) > 1:
-            y = np.sign(diff[1])
-            if np.absolute(diff[0]) == 1:
-                x = np.sign(diff[0])
-        me = np.add(me, np.array([x, y]))
-    return me
+    stepx = them[0] - me[0]
+    stepy = them[1] - me[1]
+    if np.abs(stepx) <= 1 and np.abs(stepy) <= 1:
+        return me
+    else:
+        move = np.sign([stepx, stepy])
+        return np.add(me, move)
 
 
-def process(actions, positions):
-    moves = {
+def move(positions, dir):
+    directions = {
         "U": np.array([0, 1]),
         "D": np.array([0, -1]),
         "R": np.array([1, 0]),
         "L": np.array([-1, 0]),
     }
+    positions[0] = np.add(positions[0], directions[dir])
+    for j in range(1, len(positions)):
+        positions[j] = chase(positions[j], positions[j - 1])
+    return positions
 
+
+def mark_visited(grid, pos):
+    if pos[1] not in grid:
+        grid[pos[1]] = {}
+    if pos[0] not in grid[pos[1]]:
+        grid[pos[1]][pos[0]] = True
+        return [grid, True]
+    return [grid, False]
+
+
+def process(actions, positions):
     grid = {0: {0: True}}
     sum = 1
-    for move, amount in actions:
+    for dir, amount in actions:
         for i in range(int(amount)):
-            positions[0] = np.add(positions[0], moves[move])
-            for j in range(1, len(positions)):
-                positions[j] = chase(positions[j], positions[j - 1])
-
-            if positions[-1][1] not in grid:
-                grid[positions[-1][1]] = {}
-            if positions[-1][0] not in grid[positions[-1][1]]:
-                grid[positions[-1][1]][positions[-1][0]] = True
+            positions = move(positions, dir)
+            grid, new = mark_visited(grid, positions[-1])
+            if new:
                 sum += 1
     return sum
 
