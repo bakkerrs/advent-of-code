@@ -36,77 +36,30 @@ def parse_input(data_path: Path) -> list:
         return [l.strip().split() for l in raw_input.readlines()]
 
 
-def part_1(actions: list):
-    """Solution code for Part 1. Should return the solution."""
-
-    headposition = np.array([0, 0])
-    tailposition = np.array([0, 0])
-    moves = {
-        "U": np.array([0, 1]),
-        "D": np.array([0, -1]),
-        "R": np.array([1, 0]),
-        "L": np.array([-1, 0]),
-    }
-
-    grid = {0: {0: True}}
-    sum = 1
-    for move, amount in actions:
-        for i in range(int(amount)):
-            headposition = np.add(headposition, moves[move])
-            diff = np.subtract(headposition, tailposition)
-            if np.max(diff) > 1 or np.min(diff) < -1:
-                x = 0
-                y = 0
-                if np.absolute(diff[0]) > 1:
-                    x = np.sign(diff[0])
-                    if np.absolute(diff[1]) == 1:
-                        y = np.sign(diff[1])
-                if np.absolute(diff[1]) > 1:
-                    y = np.sign(diff[1])
-                    if np.absolute(diff[0]) == 1:
-                        x = np.sign(diff[0])
-
-                tailposition = np.add(tailposition, np.array([x, y]))
-                x, y = tailposition
-                if y not in grid:
-                    grid[y] = {}
-                if x not in grid[y]:
-                    grid[y][x] = True
-                    sum += 1
-            # print(headposition, tailposition)
-
-    return sum
-
-
-def part_2(actions: list):
-    """Solution code for Part 2. Should return the solution."""
-
-    headposition = np.array([0, 0])
-    tailposition = np.array([0, 0])
-    moves = {
-        "U": np.array([0, 1]),
-        "D": np.array([0, -1]),
-        "R": np.array([1, 0]),
-        "L": np.array([-1, 0]),
-    }
-
-    positions = [np.array([0, 0])] * 10
-
-    def chase(me, them):
-        diff = np.subtract(them, me)
-        if np.max(diff) > 1 or np.min(diff) < -1:
-            x = 0
-            y = 0
-            if np.absolute(diff[0]) > 1:
-                x = np.sign(diff[0])
-                if np.absolute(diff[1]) == 1:
-                    y = np.sign(diff[1])
-            if np.absolute(diff[1]) > 1:
+def chase(me, them):
+    diff = np.subtract(them, me)
+    if np.max(diff) > 1 or np.min(diff) < -1:
+        x = 0
+        y = 0
+        if np.absolute(diff[0]) > 1:
+            x = np.sign(diff[0])
+            if np.absolute(diff[1]) == 1:
                 y = np.sign(diff[1])
-                if np.absolute(diff[0]) == 1:
-                    x = np.sign(diff[0])
-            me = np.add(me, np.array([x, y]))
-        return me
+        if np.absolute(diff[1]) > 1:
+            y = np.sign(diff[1])
+            if np.absolute(diff[0]) == 1:
+                x = np.sign(diff[0])
+        me = np.add(me, np.array([x, y]))
+    return me
+
+
+def process(actions, positions):
+    moves = {
+        "U": np.array([0, 1]),
+        "D": np.array([0, -1]),
+        "R": np.array([1, 0]),
+        "L": np.array([-1, 0]),
+    }
 
     grid = {0: {0: True}}
     sum = 1
@@ -121,9 +74,19 @@ def part_2(actions: list):
             if positions[-1][0] not in grid[positions[-1][1]]:
                 grid[positions[-1][1]][positions[-1][0]] = True
                 sum += 1
-            # print(headposition, tailposition)
-
     return sum
+
+
+def part_1(actions: list):
+    """Solution code for Part 1. Should return the solution."""
+
+    return process(actions, [np.array([0, 0])] * 2)
+
+
+def part_2(actions: list):
+    """Solution code for Part 2. Should return the solution."""
+
+    return process(actions, [np.array([0, 0])] * 10)
 
 
 def run_direct():
@@ -132,7 +95,7 @@ def run_direct():
     justfile interface. Useful for quick debugging and checking your work.
     """
     input = parse_input(SAMPLE_PATH)
-    print(part_2(input))
+    print(part_1(input))
 
 
 # ---=== PROBLEM CODE ABOVE ===---
