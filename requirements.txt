@@ -1,5 +1,0 @@
-pytest
-requests
-tomli
-black
-numpy
